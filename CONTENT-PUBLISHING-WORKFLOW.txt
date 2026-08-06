@@ -1,0 +1,18 @@
+PROJECT LIGHTHOUSE CONTENT WORKFLOW
+
+Cadence: two posts per month.
+- First posting window: 1st week of each month
+- Second posting window: 3rd week of each month
+
+Recommended mix:
+- One full article (1,500-3,000 words)
+- One quick read, lab update, or technical explainer (400-900 words)
+
+Editorial pillars:
+Cybersecurity & Compliance; Infrastructure; Automation & AV; Development & Data; AI & Emerging Technology; Business & Leadership.
+
+Each full article should include:
+Executive Summary; Why It Matters; In Plain English analogy; Technical Deep Dive; Real-World Example; Common Mistakes; Practical Next Steps.
+
+AUTOMATION LIMITATION
+ChatGPT can automatically create the twice-monthly draft and publishing package on schedule. Direct publishing to Plesk requires a future GitHub deployment or authenticated Plesk/FTP integration. Until that is connected, upload the generated article files and updated sitemap to httpdocs.

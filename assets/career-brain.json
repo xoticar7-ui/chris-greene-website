@@ -1,0 +1,184 @@
+{
+  "updated": "2026-08-05",
+  "identity": {
+    "name": "Chris Greene",
+    "location": "Pinellas Park, Florida",
+    "tagline": "Strategy. Technology. Relationships."
+  },
+  "facts": {
+    "itExperience": {
+      "answer": "approximately 20 years",
+      "basis": "No Problem Atoll and hands-on business systems work dating to 2006",
+      "confidence": "high",
+      "lastVerified": "2026-08-05",
+      "sourceNote": "No Problem Atoll and business systems consulting date to 2006."
+    },
+    "salesExperience": {
+      "answer": "more than 25 years",
+      "basis": "older resumes documented 14 years of sales experience in 2012, followed by continuous sales, SaaS, account management, and consulting roles",
+      "confidence": "high",
+      "lastVerified": "2026-08-05",
+      "sourceNote": "Older resume archive documented 14 years of sales experience in 2012; later roles continue through 2026."
+    },
+    "customerSuccessExperience": {
+      "answer": "approximately 8 years",
+      "basis": "SaaS business development, account management, customer success leadership, and consulting since 2017",
+      "confidence": "high",
+      "lastVerified": "2026-08-05"
+    },
+    "emailDeliverabilityExperience": {
+      "answer": "more than 5 years",
+      "basis": "Validity and consulting work involving sender reputation, authentication, inbox placement, and troubleshooting",
+      "confidence": "high",
+      "lastVerified": "2026-08-05"
+    },
+    "accountsManaged": "roughly 200 to 220 accounts",
+    "bookOfBusiness": "approximately $2 million",
+    "pipelineInfluenced": "more than $10 million",
+    "nrr": "105%+ for two consecutive years, with 110%+ in current consulting leadership work",
+    "teamLeadership": "co-led a team of 15 Account Managers and supported five internal promotions"
+  },
+  "roles": [
+    {
+      "company": "CG Consulting LLC",
+      "role": "Owner / Director of Customer Success & Account Management",
+      "dates": "2025-present",
+      "focus": [
+        "SaaS customer lifecycle",
+        "retention and expansion",
+        "technical advisory",
+        "deliverability",
+        "operating process"
+      ]
+    },
+    {
+      "company": "Iron Mountain",
+      "role": "Inside Sales Representative",
+      "dates": "2025",
+      "focus": [
+        "cloud storage",
+        "compliance",
+        "digital transformation",
+        "$750K+ first-quarter pipeline"
+      ]
+    },
+    {
+      "company": "Validity",
+      "role": "Account Manager II / Team Lead and earlier SDR roles",
+      "dates": "2019-2024",
+      "focus": [
+        "SaaS retention",
+        "expansion",
+        "email deliverability",
+        "team coaching",
+        "forecasting",
+        "security reviews"
+      ]
+    },
+    {
+      "company": "No Problem Atoll",
+      "role": "Technology & Business Systems Consultant",
+      "dates": "2006-present",
+      "focus": [
+        "Windows environments",
+        "Active Directory",
+        "networking",
+        "cloud and SaaS",
+        "systems troubleshooting"
+      ]
+    },
+    {
+      "company": "Tech Data",
+      "role": "HP Solutions Representative",
+      "dates": "2013-2015",
+      "focus": [
+        "technology distribution",
+        "HP solutions",
+        "partner and customer sales"
+      ]
+    },
+    {
+      "company": "PawnMax / Southern Pawn",
+      "role": "Store and Marketing Leadership",
+      "dates": "2005-2017",
+      "focus": [
+        "sales leadership",
+        "operations",
+        "employee development",
+        "digital marketing",
+        "customer service"
+      ]
+    }
+  ],
+  "skills": [
+    "Customer Success",
+    "Strategic Account Management",
+    "Leadership and Coaching",
+    "Email Deliverability",
+    "SPF",
+    "DKIM",
+    "DMARC",
+    "DNS",
+    "SaaS",
+    "Salesforce",
+    "SQL-supported analytics",
+    "Forecasting",
+    "Windows Server",
+    "Active Directory",
+    "Networking",
+    "System Integrations",
+    "API workflows",
+    "SOC 2 vendor reviews"
+  ],
+  "personal": {
+    "projects": "Chris enjoys hands-on Jeep and house projects. His father taught him how to build, repair, diagnose, and work through problems.",
+    "interests": [
+      "family",
+      "dogs",
+      "BBQ and cooking",
+      "Buffalo Bills football",
+      "Jeep projects",
+      "house projects",
+      "home technology and automation",
+      "travel"
+    ]
+  },
+  "aiGuidance": {
+    "answerStyle": "Direct answer first, then concise supporting context.",
+    "uncertaintyRule": "Do not invent unsupported details. State when a specific fact is not documented.",
+    "shortQuestionExamples": [
+      "years of sales",
+      "what IT does",
+      "leadership",
+      "email",
+      "SQL",
+      "Validity",
+      "how many accounts"
+    ]
+  },
+  "brand_direction": {
+    "positioning": "Technology-minded business leader connecting security, automation, systems, customers, and strategy",
+    "pillars": [
+      "Cybersecurity & Compliance",
+      "Infrastructure",
+      "Automation & AV",
+      "Development & Data",
+      "AI & Emerging Technology",
+      "Business & Leadership"
+    ]
+  },
+  "education": [
+    "St. Petersburg College: Business Administration major, Cybersecurity minor, expected Dec 2026",
+    "St. Petersburg College: Cybersecurity major, Business Administration minor, expected Dec 2028"
+  ],
+  "credentials": [
+    "Dante Level 1, 3rd Edition (completed June 2026)",
+    "MEDDPICC training (completed February 2024)",
+    "Command of the Message training",
+    "Microsoft Shark sales certification (historical)",
+    "Sony consumer products certification (historical)",
+    "Sony Pro-AV product certification (historical)",
+    "HP and HPE product certifications (historical)",
+    "CompTIA A+ (in progress)"
+  ]
+}
