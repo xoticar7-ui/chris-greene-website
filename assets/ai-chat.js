@@ -1,108 +1,33 @@
 (() => {
   if (document.querySelector('[data-ai-chat-launcher]')) return;
 
+  const knowledge = [
+    {terms:['soc 2','soc2','trust services','type i','type ii'],title:'SOC 2: What It Is and Why It Matters',url:'article-soc2-why-it-matters.html',answer:'Chris explains SOC 2 as a way to prove that security and operational controls are designed, documented, and consistently followed. The article covers the Trust Services Criteria, Type I versus Type II reports, evidence, and why compliance should support stronger operations rather than become a paperwork exercise.'},
+    {terms:['compliance','nist','iso 27001','cis controls','gdpr','hipaa','pci'],title:'Compliance Frameworks Explained',url:'article-compliance-landscape.html',answer:'Chris compares major compliance and security frameworks by the problems they solve. SOC 2 focuses on customer assurance, ISO 27001 on an auditable security management system, NIST and CIS on practical security guidance, and privacy or industry rules such as GDPR, HIPAA, and PCI DSS on specific legal or data-handling obligations.'},
+    {terms:['zero trust','least privilege','never trust'],title:'What Is Zero Trust?',url:'quick-what-is-zero-trust.html',answer:'Chris describes Zero Trust as verifying identity, device, context, and access each time instead of assuming that anything inside a network is automatically safe. The practical goals are least privilege, smaller blast radius, stronger identity controls, and continuous verification.'},
+    {terms:['api','apis','rest','json','integration'],title:'What Is an API?',url:'quick-what-is-an-api.html',answer:'Chris explains an API as a defined way for software systems to request data or actions from one another. APIs are the connectors behind integrations, automation, SaaS workflows, and many AI tools.'},
+    {terms:['av over ip','dante','q-sys','audio video','multicast','qos'],title:'What Is AV over IP?',url:'quick-what-is-av-over-ip.html',answer:'Chris explains AV over IP as moving audio and video through standard network infrastructure instead of relying only on dedicated point-to-point cabling. The value is flexibility and scale, but success depends on bandwidth planning, multicast, QoS, latency, and network design.'},
+    {terms:['network segmentation','vlan','vlans','subnet','iot security'],title:'Why Network Segmentation Matters',url:'quick-why-network-segmentation.html',answer:'Chris explains network segmentation as separating systems into controlled zones so a problem in one area does not automatically spread everywhere. VLANs, subnets, firewall rules, and access controls reduce risk across servers, users, IoT, cameras, and AV devices.'},
+    {terms:['health score','health scores','customer health'],title:'Health Scores Are Signals',url:'insight-health-scores.html',answer:'Chris argues that customer health scores should guide investigation, not replace judgment. Good health scoring combines product usage, relationship context, support signals, commercial risk, and clear follow-up actions.'},
+    {terms:['renewal','customer success renewal','retention'],title:'Customer Success Should Not Begin at Renewal',url:'insight-customer-success-renewal.html',answer:'Chris explains that renewal outcomes are built throughout the customer lifecycle. Strong handoffs, onboarding, adoption, value confirmation, executive alignment, and early risk management matter more than a last-minute renewal push.'},
+    {terms:['deliverability','email reputation','inbox placement','dmarc'],title:'Deliverability Is a Business Problem',url:'insight-deliverability-business-problem.html',answer:'Chris frames email deliverability as a revenue and customer-experience issue, not only a technical metric. Authentication, reputation, data quality, engagement, and sending practices directly affect whether business messages reach people.'},
+    {terms:['hyper-v','hyper v','virtual machine','virtualization'],title:'Hyper-V and Virtualization',url:'labs.html',answer:'Chris is expanding the site’s infrastructure content around Hyper-V, virtual machines, networking, checkpoints, storage, Windows Server labs, and the security considerations that come with running virtualized environments. Related hands-on material will appear in Labs as it is published.'},
+    {terms:['linux','ubuntu','debian','rocky linux','bash','ssh'],title:'Linux and Server Operations',url:'knowledge.html',answer:'Chris is expanding the knowledge base to cover Linux fundamentals, Ubuntu and Debian administration, SSH, permissions, services, logging, patching, Docker, and practical server security. New Linux material will be published through the Knowledge Hub and Labs.'},
+    {terms:['server manager','windows server','active directory','group policy','dns','dhcp'],title:'Windows Server and Server Manager',url:'knowledge.html',answer:'Chris’s infrastructure direction includes Windows Server, Server Manager, Active Directory, Group Policy, DNS, DHCP, access management, PowerShell, and troubleshooting. The site will connect these topics to real operational and security outcomes.'},
+    {terms:['new saas','security saas','tech radar','new security tools','emerging tools'],title:'Tech Radar',url:'insights.html',answer:'Chris is adding a Tech Radar focused on new SaaS, cybersecurity, infrastructure, automation, AI, IT management, and AV tools. Each review will focus on the problem solved, who should care, tradeoffs, security considerations, and whether the product is worth evaluating.'}
+  ];
+
   const styles = document.createElement('style');
-  styles.textContent = `
-    .ai-chat-launcher{position:fixed;right:22px;bottom:22px;z-index:120;border:0;border-radius:999px;padding:14px 18px;background:linear-gradient(135deg,var(--blue),#2563eb);color:#fff;font:800 14px Inter,sans-serif;box-shadow:0 16px 38px rgba(37,99,235,.38);cursor:pointer;display:flex;align-items:center;gap:9px}
-    .ai-chat-launcher:hover{transform:translateY(-2px)}
-    .ai-chat-window{position:fixed;right:22px;bottom:84px;z-index:121;width:min(390px,calc(100vw - 28px));max-height:min(620px,calc(100vh - 110px));display:none;flex-direction:column;border:1px solid var(--line);border-radius:22px;background:var(--card);box-shadow:var(--shadow);overflow:hidden}
-    .ai-chat-window.open{display:flex}
-    .ai-chat-header{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:17px 18px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,rgba(59,130,246,.16),rgba(6,182,212,.08))}
-    .ai-chat-header strong{display:block;font-family:'Space Grotesk',Inter,sans-serif;font-size:18px}
-    .ai-chat-header small{display:block;color:var(--muted)}
-    .ai-chat-close{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);cursor:pointer}
-    .ai-chat-body{padding:17px;overflow:auto}
-    .ai-chat-message{padding:12px 14px;border-radius:15px;margin-bottom:11px;line-height:1.5}
-    .ai-chat-message.bot{background:var(--bg2);color:var(--text);border:1px solid var(--line)}
-    .ai-chat-message.user{background:rgba(59,130,246,.18);color:var(--text);margin-left:36px}
-    .ai-chat-chips{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
-    .ai-chat-chips button{border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:999px;padding:7px 10px;cursor:pointer;font:700 12px Inter,sans-serif}
-    .ai-chat-form{display:grid;grid-template-columns:1fr auto;gap:9px;padding:14px;border-top:1px solid var(--line)}
-    .ai-chat-form input{min-width:0;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:12px;padding:12px;font:inherit}
-    .ai-chat-form button{border:0;border-radius:12px;padding:0 15px;background:var(--blue);color:#fff;font-weight:800;cursor:pointer}
-    @media(max-width:620px){.ai-chat-launcher{right:14px;bottom:14px}.ai-chat-window{right:14px;bottom:74px}.ai-chat-form{grid-template-columns:1fr}.ai-chat-form button{min-height:42px}}
-  `;
+  styles.textContent = `.ai-chat-launcher{position:fixed;right:22px;bottom:22px;z-index:120;border:0;border-radius:999px;padding:14px 18px;background:linear-gradient(135deg,var(--blue),#2563eb);color:#fff;font:800 14px Inter,sans-serif;box-shadow:0 16px 38px rgba(37,99,235,.38);cursor:pointer;display:flex;align-items:center;gap:9px}.ai-chat-launcher:hover{transform:translateY(-2px)}.ai-chat-window{position:fixed;right:22px;bottom:84px;z-index:121;width:min(410px,calc(100vw - 28px));max-height:min(650px,calc(100vh - 110px));display:none;flex-direction:column;border:1px solid var(--line);border-radius:22px;background:var(--card);box-shadow:var(--shadow);overflow:hidden}.ai-chat-window.open{display:flex}.ai-chat-header{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:17px 18px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,rgba(59,130,246,.16),rgba(6,182,212,.08))}.ai-chat-header strong{display:block;font-family:'Space Grotesk',Inter,sans-serif;font-size:18px}.ai-chat-header small{display:block;color:var(--muted)}.ai-chat-close{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);cursor:pointer}.ai-chat-body{padding:17px;overflow:auto}.ai-chat-message{padding:12px 14px;border-radius:15px;margin-bottom:11px;line-height:1.5}.ai-chat-message.bot{background:var(--bg2);color:var(--text);border:1px solid var(--line)}.ai-chat-message.user{background:rgba(59,130,246,.18);color:var(--text);margin-left:36px}.ai-chat-message a{display:inline-block;margin-top:8px;color:var(--cyan);font-weight:800}.ai-chat-chips{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.ai-chat-chips button{border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:999px;padding:7px 10px;cursor:pointer;font:700 12px Inter,sans-serif}.ai-chat-form{display:grid;grid-template-columns:1fr auto;gap:9px;padding:14px;border-top:1px solid var(--line)}.ai-chat-form input{min-width:0;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:12px;padding:12px;font:inherit}.ai-chat-form button{border:0;border-radius:12px;padding:0 15px;background:var(--blue);color:#fff;font-weight:800;cursor:pointer}@media(max-width:620px){.ai-chat-launcher{right:14px;bottom:14px}.ai-chat-window{right:14px;bottom:74px}.ai-chat-form{grid-template-columns:1fr}.ai-chat-form button{min-height:42px}}`;
   document.head.appendChild(styles);
 
-  const launcher = document.createElement('button');
-  launcher.type = 'button';
-  launcher.className = 'ai-chat-launcher';
-  launcher.setAttribute('data-ai-chat-launcher', '');
-  launcher.setAttribute('aria-expanded', 'false');
-  launcher.setAttribute('aria-controls', 'ai-chat-window');
-  launcher.innerHTML = '<span aria-hidden="true">✦</span> Ask Chris';
-
-  const panel = document.createElement('section');
-  panel.id = 'ai-chat-window';
-  panel.className = 'ai-chat-window';
-  panel.setAttribute('aria-label', 'Ask about Chris');
-  panel.innerHTML = `
-    <div class="ai-chat-header">
-      <div><strong>Ask about Chris</strong><small>Career, technical background and interests</small></div>
-      <button class="ai-chat-close" type="button" aria-label="Close chat">×</button>
-    </div>
-    <div class="ai-chat-body" aria-live="polite">
-      <div class="ai-chat-message bot">Ask a full question or a quick fragment such as “years of sales,” “what IT does,” or “leadership.”</div>
-      <div class="ai-chat-chips">
-        <button type="button" data-question="years of sales">Years of sales</button>
-        <button type="button" data-question="what IT does">What IT does</button>
-        <button type="button" data-question="cybersecurity">Cybersecurity</button>
-        <button type="button" data-question="leadership">Leadership</button>
-      </div>
-    </div>
-    <form class="ai-chat-form">
-      <input type="text" aria-label="Question about Chris" placeholder="Ask about Chris..." autocomplete="off" />
-      <button type="submit">Ask</button>
-    </form>
-  `;
-
-  document.body.append(panel, launcher);
-
-  const body = panel.querySelector('.ai-chat-body');
-  const form = panel.querySelector('.ai-chat-form');
-  const input = form.querySelector('input');
-
-  const open = () => {
-    panel.classList.add('open');
-    launcher.setAttribute('aria-expanded', 'true');
-    setTimeout(() => input.focus(), 50);
-  };
-
-  const close = () => {
-    panel.classList.remove('open');
-    launcher.setAttribute('aria-expanded', 'false');
-  };
-
-  const submitQuestion = question => {
-    const clean = question.trim();
-    if (!clean) return;
-
-    const userMessage = document.createElement('div');
-    userMessage.className = 'ai-chat-message user';
-    userMessage.textContent = clean;
-    body.appendChild(userMessage);
-
-    const botMessage = document.createElement('div');
-    botMessage.className = 'ai-chat-message bot';
-    botMessage.textContent = typeof answerQuestion === 'function'
-      ? answerQuestion(clean)
-      : 'The career assistant is temporarily unavailable. Please use the résumé or contact page.';
-    body.appendChild(botMessage);
-
-    input.value = '';
-    body.scrollTop = body.scrollHeight;
-  };
-
-  launcher.addEventListener('click', () => panel.classList.contains('open') ? close() : open());
-  panel.querySelector('.ai-chat-close').addEventListener('click', close);
-  form.addEventListener('submit', event => {
-    event.preventDefault();
-    submitQuestion(input.value);
-  });
-  panel.querySelectorAll('[data-question]').forEach(button => {
-    button.addEventListener('click', () => submitQuestion(button.dataset.question));
-  });
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape') close();
-  });
+  const launcher=document.createElement('button');launcher.type='button';launcher.className='ai-chat-launcher';launcher.setAttribute('data-ai-chat-launcher','');launcher.setAttribute('aria-expanded','false');launcher.setAttribute('aria-controls','ai-chat-window');launcher.innerHTML='<span aria-hidden="true">✦</span> Ask Chris';
+  const panel=document.createElement('section');panel.id='ai-chat-window';panel.className='ai-chat-window';panel.setAttribute('aria-label','Ask about Chris');panel.innerHTML=`<div class="ai-chat-header"><div><strong>Ask Chris</strong><small>Career, articles, projects and technical topics</small></div><button class="ai-chat-close" type="button" aria-label="Close chat">×</button></div><div class="ai-chat-body" aria-live="polite"><div class="ai-chat-message bot">Ask about Chris’s experience or published topics such as SOC 2, Zero Trust, APIs, Hyper-V, Linux, Server Manager, networking, deliverability or leadership.</div><div class="ai-chat-chips"><button type="button" data-question="years of sales">Years of sales</button><button type="button" data-question="what IT does">What IT does</button><button type="button" data-question="SOC 2">SOC 2</button><button type="button" data-question="Hyper-V">Hyper-V</button><button type="button" data-question="Linux">Linux</button><button type="button" data-question="Tech Radar">Tech Radar</button></div></div><form class="ai-chat-form"><input type="text" aria-label="Question about Chris" placeholder="Ask about Chris or an article..." autocomplete="off"/><button type="submit">Ask</button></form>`;
+  document.body.append(panel,launcher);
+  const body=panel.querySelector('.ai-chat-body'),form=panel.querySelector('.ai-chat-form'),input=form.querySelector('input');
+  const open=()=>{panel.classList.add('open');launcher.setAttribute('aria-expanded','true');setTimeout(()=>input.focus(),50)};
+  const close=()=>{panel.classList.remove('open');launcher.setAttribute('aria-expanded','false')};
+  const findKnowledge=q=>{const n=q.toLowerCase();return knowledge.map(item=>({...item,score:item.terms.reduce((s,t)=>s+(n.includes(t)?t.length:0),0)})).sort((a,b)=>b.score-a.score)[0]};
+  const submitQuestion=question=>{const clean=question.trim();if(!clean)return;const user=document.createElement('div');user.className='ai-chat-message user';user.textContent=clean;body.appendChild(user);const bot=document.createElement('div');bot.className='ai-chat-message bot';const hit=findKnowledge(clean);if(hit&&hit.score>0){bot.append(document.createTextNode(hit.answer));const link=document.createElement('a');link.href=hit.url;link.textContent=`Read: ${hit.title} →`;bot.appendChild(document.createElement('br'));bot.appendChild(link);}else{bot.textContent=typeof answerQuestion==='function'?answerQuestion(clean):'I do not have a reliable answer yet. Please use the résumé, Knowledge Hub, or Contact page.';}body.appendChild(bot);input.value='';body.scrollTop=body.scrollHeight};
+  launcher.addEventListener('click',()=>panel.classList.contains('open')?close():open());panel.querySelector('.ai-chat-close').addEventListener('click',close);form.addEventListener('submit',e=>{e.preventDefault();submitQuestion(input.value)});panel.querySelectorAll('[data-question]').forEach(b=>b.addEventListener('click',()=>submitQuestion(b.dataset.question)));document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
 })();
